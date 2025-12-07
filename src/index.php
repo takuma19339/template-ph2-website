@@ -1,3 +1,20 @@
+<?php
+require __DIR__. '/./src/db/dbconnect.php';
+
+$questions = $dbh->query("SELECT * FROM Question_Table")->fetchAll();
+$choices = $dbh->query("SELECT * FROM Choices_Table")->fetchAll();
+
+foreach ($questions as $qKey => $question) {
+  $question["choices"] = [];
+  foreach ($choices as $cKey => $choice) {
+    if ($choice["question_id"] == $question["id"]) {
+      $question["choices"][] = $choice;
+    }
+  }
+  $questions[$qKey] = $question;
+}
+var_dump($questions);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -14,7 +31,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@400;700&display=swap"
     rel="stylesheet">
-  <script src="./assets/scripts/script.js" defer></script>
+  <script src="./assets/scripts/common.js" defer></script>
 </head>
 
 <body>
