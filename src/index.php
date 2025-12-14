@@ -1,5 +1,5 @@
 <?php
-require __DIR__. '/./src/db/dbconnect.php';
+require __DIR__. '/db/dbconnect.php';
 
 $questions = $dbh->query("SELECT * FROM Question_Table")->fetchAll();
 $choices = $dbh->query("SELECT * FROM Choices_Table")->fetchAll();
@@ -13,7 +13,6 @@ foreach ($questions as $qKey => $question) {
   }
   $questions[$qKey] = $question;
 }
-var_dump($questions);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -77,7 +76,28 @@ var_dump($questions);
     </section>
     <!-- /.p-hero .p-quiz-hero -->
 
-    <div class="p-quiz-container l-container">
+    <?php for ($i = 0; $i < count($questions); $i++) { ?>
+      <div class="p-quiz-box__question">
+        <h2 class="p-quiz-box__question__title">
+          <span class="p-quiz-box__label">Q<?= $i + 1 ?></span>
+          <span class="p-quiz-box__question__title__text"><?= $questions[$i]["content"]; ?></span>
+        </h2>
+        <figure class="p-quiz-box__question__image">
+          <img src="../assets/img/quiz/img-quiz0<?= $i + 1 ?>.png" alt="">
+        </figure>
+      </div>
+      <div class="p-quiz-box__answer">
+        <span class="p-quiz-box__label p-quiz-box__label--accent">A</span>
+        <ul class="p-quiz-box__answer__list">
+          <?php foreach ($questions[$i][$choices] as $key => $choice) { ?>
+            <li class="p-quiz-box__answer__item">
+              <button class="p-quiz-box__answer__button js-answer" data-answer="<?= $key ?>" data-correct="<?=$choices["valid"]?>">
+                <?= $choice["name"]; ?><i class="u-icon__arrow"></i>
+              </button>
+            </li>
+<?php }} ?>
+    
+        <div class="p-quiz-container l-container">
       <section class="p-quiz-box js-quiz" data-quiz="0">
         <div class="p-quiz-box__question">
           <h2 class="p-quiz-box__question__title">
@@ -330,7 +350,7 @@ var_dump($questions);
       <!-- ./p-quiz-box -->
     </div>
     <!-- /.l-container .p-quiz-container -->
-  </main>
+    </main>
 
   <div class="p-line">
     <div class="l-container">

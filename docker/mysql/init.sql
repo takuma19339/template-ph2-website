@@ -13,7 +13,7 @@ CREATE TABLE Question_Table (
     content VARCHAR(255) NOT NULL,
     image VARCHAR(255),
     supplement VARCHAR(255) DEFAULT 'なし'
-);
+)CHARSET=utf8;
 
 -- データの追加
 INSERT INTO Question_Table (content, image, supplement) VALUES
@@ -28,9 +28,9 @@ CREATE TABLE Choices_Table (
     id INT PRIMARY KEY AUTO_INCREMENT,
     question_id INT NOT NULL, 
     name VARCHAR(100) NOT NULL,
-    valid TINYINT
+    valid TINYINT(1) NOT NULL,
     FOREIGN KEY (question_id) REFERENCES Question_Table(id) ON DELETE CASCADE
-)
+)CHARSET=utf8;
 
 INSERT INTO Choices_Table (question_id, name, valid) VALUES
 (1, '約28万人', 0),
