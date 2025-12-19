@@ -30,12 +30,15 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: posse
       MYSQL_CHARACTER_SET_SERVER: utf8mb4
-      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+      MYSQL_COLLATION_SERVER: utf8mb4_0900_ai_ci
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: >
+      mysqld
+      --skip-character-set-client-handshake
 
   # PHPMyAdmin（データベース管理ツール）
   phpmyadmin:

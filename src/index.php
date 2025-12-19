@@ -91,7 +91,7 @@ foreach ($questions as $qKey => $question) {
         <ul class="p-quiz-box__answer__list">
           <?php foreach ($questions[$i][$choices] as $key => $choice) { ?>
             <li class="p-quiz-box__answer__item">
-              <button class="p-quiz-box__answer__button js-answer" data-answer="<?= $key ?>" data-correct="<?=$choices["valid"]?>">
+              <button class="p-quiz-box__answer__button js-answer" data-answer="<?= $key ?>" data-correct="<?php echo $choices["valid"]; ?>">
                 <?= $choice["name"]; ?><i class="u-icon__arrow"></i>
               </button>
             </li>
