@@ -61,15 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br /><br />
 
         <label for ="name">選択肢:</label><br />
-        <input class="choices" id="choice1" type="text" name="choices[]" value="<?php echo $question['choice1']; ?>" />
-        <input class="choices" id="choice2"type="text" name="choices[]" value="<?php echo $question['choice2']; ?>" />
-        <input class="choices" id="choice3"type="text" name="choices[]" value="<?php echo $question['choice3']; ?>" />
+        <?php foreach ($choices as $index => $choice){?>
+        <input class="choices" id="choice<?php echo $index + 1; ?>" type ="text" name="choices[]" value="<?php echo ($choice['name']); ?>" />
+        <?}?>
         <br /><br />
 
         <label for="valid">正解の選択肢:</label><br />
-        <input class="answer" id="answer1" type="radio" name="valid" value="choice1" />選択肢1
-        <input class="answer" id="answer2" type="radio" name="valid" value="choice2" />選択肢2
-        <input class="answer" id="answer3" type="radio" name="valid" value="choice3" />選択肢3
+        <input class="answer" id="answer1" type="radio" name="valid" value="choice1" <?php echo $choice['valid'] == 1 ? 'checked' : ''; ?> />選択肢1
+        <input class="answer" id="answer2" type="radio" name="valid" value="choice2" <?php echo $choice['valid'] == 1 ? 'checked' : ''; ?>/>選択肢2
+        <input class="answer" id="answer3" type="radio" name="valid" value="choice3" <?php echo $choice['valid'] == 1 ? 'checked' : ''; ?>/>選択肢3
         <br /><br />
 
         <label for="image">問題の画像:</label><br />
