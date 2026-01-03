@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt2 = $dbh->prepare('INSERT INTO Choices_Table(question_id, name, valid) VALUES(:question_id :name :valid)');
     $stmt2->bindValue(':question_id', $question_id);
-    $stmt2->bindValue(':name', $_POST['name']);
+    $stmt2->bindValue(':name', $_POST['choices'][$index]);
     $stmt2->bindValue(':valid', $_POST['valid']);
     $stmt2->execute();
     
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input id="content"type="text" name="content" placeholder="問題文を入力してください" />
         <br /><br />
 
-        <label for ="name">選択肢:</label><br />
-        <input class="choices" id="choice1" type="text" name="name" placeholder="選択肢1を入力してください" />
-        <input class="choices" id="choice2"type="text" name="name" placeholder="選択肢2を入力してください" />
-        <input class="choices" id="choice3"type="text" name="name" placeholder="選択肢3を入力してください" />
+        <label for ="choices[]">選択肢:</label><br />
+        <input class="choices" id="choice1" type="text" name="choices[]" placeholder="選択肢1を入力してください" />
+        <input class="choices" id="choice2"type="text" name="choices[]" placeholder="選択肢2を入力してください" />
+        <input class="choices" id="choice3"type="text" name="choices[]" placeholder="選択肢3を入力してください" />
         <br /><br />
 
         <label for="valid">正解の選択肢:</label><br />

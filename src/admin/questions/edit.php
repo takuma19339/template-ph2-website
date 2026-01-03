@@ -4,7 +4,7 @@ require __DIR__. '/../../db/dbconnect.php';
 $stmt = $dbh->prepare('SELECT * FROM Question_Table WHERE id = :id');
 $stmt->bindValue(':id', $_REQUEST['id']);
 $stmt->execute();
-$question = $stmt->fetchAll();
+$question = $stmt->fetch();
 
 $stmt2 = $dbh->prepare('SELECT * FROM Choices_Table WHERE question_id = :question_id');
 $stmt2->bindValue(':question_id', $_REQUEST['id']);
@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $dbh->prepare('UPDATE Question_Table SET content = :content, supplement = :supplement WHERE id = :id');
     $stmt->bindValue(':content', $_POST['content']);
     $stmt->bindValue(':supplement', $_POST['supplement']);
-    $stmt->bindValue(':id', $_POST['id']);
+    $stmt->bindValue(':id', $_POST['question_id']);
     $stmt->execute();
 
     foreach ($choices as $index => $choice) {
         $stmt2 = $dbh->prepare('UPDATE Choices_Table SET name = :name, valid = :valid WHERE id = :id AND question_id= :question_id');
-        $stmt2->bindValue(':name', $_POST['name'][$index]);
+        $stmt2->bindValue(':name', $_POST['choices'][$index]);
         $stmt2->bindValue(':valid', ($_POST['valid'] == 'choice' . ($index + 1)) ? 1 : 0);
         $stmt2->bindValue(':id', $choice['id']);
         $stmt2->execute();
@@ -54,16 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="main">
         <h1>問題編集</h1>
     <form action method="post" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?php echo $question['id']; ?>" />
+        <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>" />
 
         <label for="content">問題文:</label><br />
         <input id="content"type="text" name="content" value="<?php echo $question['content']; ?>" />
         <br /><br />
 
         <label for ="name">選択肢:</label><br />
-        <input class="choices" id="choice1" type="text" name="name" value="<?php echo $question['choice1']; ?>" />
-        <input class="choices" id="choice2"type="text" name="name" value="<?php echo $question['choice2']; ?>" />
-        <input class="choices" id="choice3"type="text" name="name" value="<?php echo $question['choice3']; ?>" />
+        <input class="choices" id="choice1" type="text" name="choices[]" value="<?php echo $question['choice1']; ?>" />
+        <input class="choices" id="choice2"type="text" name="choices[]" value="<?php echo $question['choice2']; ?>" />
+        <input class="choices" id="choice3"type="text" name="choices[]" value="<?php echo $question['choice3']; ?>" />
         <br /><br />
 
         <label for="valid">正解の選択肢:</label><br />
