@@ -1,5 +1,19 @@
 <?php
 require __DIR__. '/../../db/dbconnect.php';
+
+$question_id = $_GET['id'];
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $stmt = $dbh->prepare('UPDATE Question_Table SET content = :content, image = :image, supplement = :supplement WHERE id = :id');
+    $stmt->bindValue(':content', $_POST['content']);
+    $stmt->bindValue(':image', $_POST['image']);
+    $stmt->bindValue(':supplement', $_POST['supplement']);
+    $stmt->bindValue(':id', $question_id);
+    $stmt->execute();
+
+    header('Location: http://localhost:8080/admin/index.php');
+    exit;
+}
+$stmt = $dbh->prepare('SELECT * FROM Question_Table WHERE id = :id');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,13 +42,13 @@ require __DIR__. '/../../db/dbconnect.php';
         <input type="hidden" name="id" value="<?php echo $question['id']; ?>" />
 
         <label for="content">問題文:</label><br />
-        <input id="content"type="text" name="content" placeholder="問題文を入力してください" />
+        <input id="content"type="text" name="content" value="<?php echo $question['content']; ?>" />
         <br /><br />
 
         <label for ="name">選択肢:</label><br />
-        <input class="choices" id="choice1" type="text" name="name" placeholder="選択肢1を入力してください" />
-        <input class="choices" id="choice2"type="text" name="name" placeholder="選択肢2を入力してください" />
-        <input class="choices" id="choice3"type="text" name="name" placeholder="選択肢3を入力してください" />
+        <input class="choices" id="choice1" type="text" name="name" value="<?php echo $question['choice1']; ?>" />
+        <input class="choices" id="choice2"type="text" name="name" value="<?php echo $question['choice2']; ?>" />
+        <input class="choices" id="choice3"type="text" name="name" value="<?php echo $question['choice3']; ?>" />
         <br /><br />
 
         <label for="valid">正解の選択肢:</label><br />

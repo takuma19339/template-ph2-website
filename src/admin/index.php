@@ -29,7 +29,7 @@ require __DIR__. '/../db/dbconnect.php';
         foreach($dbh->query("SELECT * FROM Question_Table") as $row){?>
         <div class="qustions">
             <p class="id"><? echo $row['id']."　";?></p>
-            <a href=""><?php echo $row['content']."<br>"; ?></a>
+            <a href="questions/edit.php?id=<?php echo $row['id']; ?>"><?php echo $row['content']."<br>"; ?></a>
             <button id="delete-btn">削除</button>
         </div>
 
