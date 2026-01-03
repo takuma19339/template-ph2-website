@@ -1,19 +1,34 @@
 <?php
 require __DIR__. '/../../db/dbconnect.php';
 
-$question_id = $_GET['id'];
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $dbh->prepare('UPDATE Question_Table SET content = :content, image = :image, supplement = :supplement WHERE id = :id');
+$stmt = $dbh->prepare('SELECT * FROM Question_Table WHERE id = :id');
+$stmt->bindValue(':id', $_REQUEST['id']);
+$stmt->execute();
+$question = $stmt->fetchAll();
+
+$stmt2 = $dbh->prepare('SELECT * FROM Choices_Table WHERE question_id = :question_id');
+$stmt2->bindValue(':question_id', $_REQUEST['id']);
+$stmt2->execute();
+$choices = $stmt2->fetchAll();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $stmt = $dbh->prepare('UPDATE Question_Table SET content = :content, supplement = :supplement WHERE id = :id');
     $stmt->bindValue(':content', $_POST['content']);
-    $stmt->bindValue(':image', $_POST['image']);
     $stmt->bindValue(':supplement', $_POST['supplement']);
-    $stmt->bindValue(':id', $question_id);
+    $stmt->bindValue(':id', $_POST['id']);
     $stmt->execute();
+
+    foreach ($choices as $index => $choice) {
+        $stmt2 = $dbh->prepare('UPDATE Choices_Table SET name = :name, valid = :valid WHERE id = :id AND question_id= :question_id');
+        $stmt2->bindValue(':name', $_POST['name'][$index]);
+        $stmt2->bindValue(':valid', ($_POST['valid'] == 'choice' . ($index + 1)) ? 1 : 0);
+        $stmt2->bindValue(':id', $choice['id']);
+        $stmt2->execute();
+    }
 
     header('Location: http://localhost:8080/admin/index.php');
     exit;
 }
-$stmt = $dbh->prepare('SELECT * FROM Question_Table WHERE id = :id');
 ?>
 <!DOCTYPE html>
 <html lang="en">
