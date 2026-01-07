@@ -1,5 +1,15 @@
 <?php
 require __DIR__. '/../db/dbconnect.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $stmt = $dbh->prepare('DELETE FROM Question_Table WHERE id = :id');
+    $stmt->bindValue(':id', $_POST['question_id']);
+    $stmt->execute();
+
+    $stmt2 = $dbh->prepare('DELETE FROM Choices_Table WHERE question_id = :question_id');
+    $stmt2->bindValue(':question_id', $_POST['question_id']);
+    $stmt2->execute();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +40,10 @@ require __DIR__. '/../db/dbconnect.php';
         <div class="qustions">
             <p class="id"><? echo $row['id']."　";?></p>
             <a href="questions/edit.php?id=<?php echo $row['id']; ?>"><?php echo $row['content']."<br>"; ?></a>
-            <button id="delete-btn">削除</button>
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="question_id" value="<?php echo $row['id']; ?>" />
+                <button type="submit" id="delete-btn">削除</button>
+            </form> 
         </div>
 
         <?php

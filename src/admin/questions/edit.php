@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input id="exp"type="text" name="supplement" placeholder="補足を入力してください" />
         <br /><br />
 
-        <button id="create-btn" type="submit">作成</button>
+        <button id="edit-btn" type="submit">編集</button>
     </form>
 </div>
 </section>

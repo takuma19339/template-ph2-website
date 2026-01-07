@@ -51,3 +51,10 @@ INSERT INTO Choices_Table (question_id, name, valid) VALUES
 (6, '約2倍', 0),
 (6, '約5倍', 1),
 (6, '約11倍', 0);
+
+CREATE TABLE Users (
+    id  INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL
+)

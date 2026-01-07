@@ -70,10 +70,25 @@ input{
 .choices{
     width:33%;
 }
-#create-btn{
-    width:100%;
+button{
+    width:10%;
     height:35px;
     background-color:aqua;
     color:white;
+}
+button:hover{
+    background-color:deepskyblue;
+    cursor:pointer;
+}
+
+.signin{
+    width:100vw;
+    height:100vh;
+    background-color: rgb(249, 233, 183);
+    padding:3%;
+}
+
+.sign{
+    width:80%
 }
 
