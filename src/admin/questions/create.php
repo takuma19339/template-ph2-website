@@ -1,5 +1,9 @@
 <?php
 require __DIR__. '/../../db/dbconnect.php';
+session_start();
+if (!isset($_SESSION['id'])) {
+  header('Location: ../auth/signin.php');
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $supplement = !empty($_POST['supplement']) ? $_POST['supplement'] : 'なし';
@@ -40,7 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <header>
         <img src="../../assets/img/logo.svg" alt="POSSE" />
-        <a href="">ログアウト</a>
+        <form action="../auth/signout.php" method="post">
+            <button type="submit">ログアウト</button>
+        </form>
     </header>
     <section>
     <div class="index">

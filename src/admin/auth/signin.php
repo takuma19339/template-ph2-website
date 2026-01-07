@@ -1,13 +1,21 @@
 <?php
+require __DIR__. '/../../db/dbconnect.php';
 session_start();
 if(isset($_SESSION['id'])){
     header('Location: ../index.php')
 }elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require __DIR__. '/../../db/dbconnect.php';
-    $stmt=$dbh->prepare('SELECT * FROM users WHERE email = :email');
+    $stmt=$dbh->prepare('SELECT * FROM Users WHERE email = :email');
     $stmt=bindValue(":email",$_POST["email"]);
     $stmt=execute();
-    $user=$stmt->fetch;
+    $user=$stmt->fetch();
+    if($_POST['password'] == $user['password']){
+        $_SESSION['id']=$user['id'];
+        header('Location: ../index.php');
+        exit;
+    }else{
+        header('Location: signin.php');
+        exit();
+    }
 }
 ?>
 
@@ -22,7 +30,9 @@ if(isset($_SESSION['id'])){
 <body>
     <header>
         <img src="../../assets/img/logo.svg" alt="POSSE" />
-        <a href="">ログアウト</a>
+        <form action="../auth/signout.php" method="post">
+            <button type="submit">ログアウト</button>
+        </form>
     </header>
     <div class="signin">
         <h2>ログイン画面</h2>
